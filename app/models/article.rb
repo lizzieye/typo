@@ -71,6 +71,31 @@ class Article < Content
     end
   end
 
+  ### added this part for hw5, part 1 ###
+  # Should return an article object that is the merged article
+  def merge_with(other_article_id)
+    other_article = Article.find_by_id(other_article_id)
+    other_article_comments = Comment.find_all_by_article_id(other_article_id)
+
+    if other_article.present?
+      # merging bodies
+      merged_body = self.body + other_article.body
+      self.body = merged_body
+
+      # merging comments
+      other_article_comments.each do |comment|
+        old_id = self.id
+        comment.article_id = old_id
+        comment.save!
+      end
+      self.save
+      other_article.destroy
+      return true
+    else
+      return false
+    end
+  end
+
   def set_permalink
     return if self.state == 'draft'
     self.permalink = self.title.to_permalink if self.permalink.nil? or self.permalink.empty?
