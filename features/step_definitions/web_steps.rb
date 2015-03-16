@@ -43,18 +43,6 @@ Given /^the blog is set up$/ do
                 :state => 'active'})
 end
 
-Given /^the blog is set up as a publisher$/ do
-  Blog.default.update_attributes!({:blog_name => 'Test Blog',
-                                   :base_url => 'http://localhost:3000'});
-  Blog.default.save!
-  User.create!({:login => 'publisher',
-                :password => 'aaaaaaaa',
-                :email => 'joe@snow.com',
-                :profile_id => 1,
-                :name => 'publisher',
-                :state => 'active'})
-end
-
 And /^I am logged into the admin panel$/ do
   visit '/accounts/login'
   fill_in 'user_login', :with => 'admin'
@@ -67,7 +55,19 @@ And /^I am logged into the admin panel$/ do
   end
 end
 
-And /^I am logged into the publisher panel$/ do
+Given /^the non-admin blog is set up$/ do
+  Blog.default.update_attributes!({:blog_name => 'Teh Blag',
+                                   :base_url => 'http://localhost:3000'});
+  Blog.default.save!
+  User.create!({:login => 'publisher',
+                :password => 'aaaaaaaa',
+                :email => 'joe@snow.com',
+                :profile_id => 1,
+                :name => 'publisher',
+                :state => 'active'})
+end
+
+And /^I am not logged into the admin panel$/ do
   visit '/accounts/login'
   fill_in 'user_login', :with => 'publisher'
   fill_in 'user_password', :with => 'aaaaaaaa'

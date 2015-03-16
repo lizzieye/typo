@@ -7,8 +7,9 @@ Feature: Merge Articles for admin user
     Given the blog is set up
     And I am logged into the admin panel
 
-  Scenario: The merged article should contain the text of both previous articles
+  Scenario: Admin should see merge button
     Given I am on the edit article page
+    Then I should see "Merge"
 
 
 
