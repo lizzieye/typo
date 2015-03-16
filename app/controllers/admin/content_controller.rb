@@ -57,9 +57,10 @@ class Admin::ContentController < Admin::BaseController
     article_id = params[:id]
     article_to_merge = params[:merge_with]
 
-    merged_article = Article.find_by_id(article_id).merge_with(article_to_merge)
-
     if current_user.admin?
+
+      merged_article = Article.find_by_id(article_id).merge_with(article_to_merge)
+
       if merged_article.present?
         flash[:notice] = "Successfully merged article #{article_to_merge} with current article #{article_id}"
         redirect_to :action => "edit", :id => params[:id]
